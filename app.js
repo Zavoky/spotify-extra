@@ -1,20 +1,22 @@
-const config = require('./config');
 const express = require('express');
-const request = require('request');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const path = require('path');
 
-var client_id = config.CLIENT_ID;
-var client_secret = config.CLIENT_SECRET;
-var redirect_uri = config.REDIRECT_URI;
+const spotify = require('./routes/spotify/index')
 
 var app = express();
+app.engine('.html', require('ejs').__express);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html')
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  resave: false,
+  saveUninitialized: false,
+  secret: 'hehexd',
+  store: new RedisStore()
+}));
 
-app.get('/login', function(req, res) {
-  var scope = 'playlist-modify-public playlist-modify-private user-modify-playback-state user-read-currently-playing';
-  res.redirect('https://accounts.spotify.com/authorize?response_type=code' +
-    '&client_id=' + client_id +
-    '&scope=' + scope +
-    '&redirect_uri=' + redirect_uri);
-});
-
+app.use('/spotify', spotify);
 
 app.listen(3000)
