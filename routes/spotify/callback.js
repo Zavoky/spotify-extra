@@ -8,8 +8,6 @@ var redirect_uri = config.REDIRECT_URI;
 
 router.get('/', (req, res) => {
   var code = req.query.code;
-  req.session.code = code;
-  req.session.save();
 
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
@@ -28,12 +26,13 @@ router.get('/', (req, res) => {
     if (!error && response.statusCode === 200) {
       req.session.access_token = body.access_token;
       req.session.refresh_token = body.refresh_token;
+      req.session.expires_in = body.expires_in;
+      req.session.time = Math.floor(Date.now() / 1000);
       res.redirect('/spotify/main');
     }
     else {
-      console.log('oauth error');
+      console.log('Error: Auth');
       console.log(error);
-      res.send('error in authentication');
     }
   });
 });
