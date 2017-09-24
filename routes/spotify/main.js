@@ -25,25 +25,11 @@ router.get('/', (req, res) => {
         }
       });
     }
-    // API calls here
-    var options = {
-      url: 'https://api.spotify.com/v1/me/playlists',
-      headers: { 'Authorization': 'Bearer ' + req.session.access_token },
-      json: true
-    };
-    request.get(options, (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        res.send(body);
-      }
-      else {
-        console.log('Error: Auth token error');
-        console.log(error);
-      }
-    });
   }
   else {
     res.redirect('/spotify/login');
   }
+  res.send('Authorized');
 });
 
 function token_expired(expires_in, time) {
