@@ -29,7 +29,6 @@ router.get('/', (req, res) => {
   else {
     res.redirect('/spotify/login');
   }
-  res.send('Authorized');
 });
 
 function token_expired(expires_in, time) {

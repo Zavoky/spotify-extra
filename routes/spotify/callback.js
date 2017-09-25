@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
     }
     else {
       console.log('Error: Auth');
-      console.log(error);
+      console.log(body);
     }
   });
 });
