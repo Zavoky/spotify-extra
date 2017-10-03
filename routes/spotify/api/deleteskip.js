@@ -10,11 +10,12 @@ router.get('/', (req, res) => {
         console.log('User ID recieved');
       }
       else {
-	console.log('User ID not recieved');
+      	console.log('User ID not recieved');
+        res.sendStatus(response.statusCode);
       }
     });
   }
-  getCurrentlyPlaying(req, () => { deleteSong(req, () => { skipSong(req) }) });
+  getCurrentlyPlaying(req, res, () => { deleteSong(req, res, () => { skipSong(req, res) }) });
 });
 
 function getOptions(URL, token) {
@@ -25,7 +26,7 @@ function getOptions(URL, token) {
   };
 };
 
-function getCurrentlyPlaying(req, callback) {
+function getCurrentlyPlaying(req, res, callback) {
   var options = getOptions('/v1/me/player/currently-playing', req.session.access_token);
   request.get(options, (error, response, body) => {
     if (!error && response.statusCode == 200) {
@@ -34,20 +35,21 @@ function getCurrentlyPlaying(req, callback) {
         req.session.playlistID = playlistURI.substr(playlistURI.lastIndexOf(':') + 1);
         req.session.trackURI = body.item.uri;
         console.log('Playlist and Track URI recieved');
-	callback();
+      	callback();
       }
       else {
         console.log('Not a playlist');
-	console.log(body);
+	      console.log(body);
       }
     }
     else {
       console.log('Current playback not recieved');
+      res.sendStatus(response.statusCode);
     }
   });
 };
 
-function deleteSong(req, callback) {
+function deleteSong(req, res, callback) {
   var options = getOptions('/v1/users/' + req.session.userID + '/playlists/' + req.session.playlistID + '/tracks', req.session.access_token); 
   var delOptions = {
     'Content-Type': 'application/json',
@@ -63,19 +65,21 @@ function deleteSong(req, callback) {
     }
     else {
       console.log('Song not deleted');
+      res.sendStatus(respones.statusCode);
     }
   });
 };
 
-function skipSong(req) {
+function skipSong(req, res) {
   var options = getOptions('/v1/me/player/next', req.session.access_token);
   request.post(options, (error, response, body) => {
     if (!error && response.statusCode === 204) {
       console.log('Song skipped');
+      res.sendStatus(204);
     }
     else {
       console.log('Song not skipped');
-      console.log(response.statusCode);
+      res.sendStatus(response.statusCode);
     }
   });
 };
