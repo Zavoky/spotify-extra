@@ -1,6 +1,10 @@
 const router = require('express').Router()
 const request = require('request');
 const path = require('path');
+const config = require('../../config');
+
+const client_id = config.CLIENT_ID;
+const client_secret = config.CLIENT_SECRET;
 
 router.get('/', (req, res) => {
   if (req.session.access_token) {
@@ -19,7 +23,7 @@ router.get('/', (req, res) => {
       request.post(refreshOptions, (error, response, body) => {
         if (!error && response.statusCode === 200) {
           req.session.access_token = body.access_token;
-          res.sendStatus(200);
+          res.sendFile(path.join(__dirname, '../../public/html/main.html'));
         }
         else {
           console.log('Error: Refresh token');
@@ -28,7 +32,9 @@ router.get('/', (req, res) => {
         }
       });
     }
-    res.sendFile(path.join(__dirname, '../../public/html/main.html'));
+    else {
+      res.sendFile(path.join(__dirname, '../../public/html/main.html'));
+    }
   }
   else {
     res.redirect('/spotify/login');

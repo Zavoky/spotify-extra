@@ -65,7 +65,7 @@ function deleteSong(req, res, callback) {
     }
     else {
       console.log('Song not deleted');
-      res.sendStatus(respones.statusCode);
+      res.sendStatus(response.statusCode);
     }
   });
 };

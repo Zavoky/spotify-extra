@@ -2,9 +2,9 @@ const router = require('express').Router();
 const request = require('request');
 const config = require('../../config');
 
-var client_id = config.CLIENT_ID;
-var client_secret = config.CLIENT_SECRET;
-var redirect_uri = config.REDIRECT_URI;
+const client_id = config.CLIENT_ID;
+const client_secret = config.CLIENT_SECRET;
+const redirect_uri = config.REDIRECT_URI;
 
 router.get('/', (req, res) => {
   var code = req.query.code;
