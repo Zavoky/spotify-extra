@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
 });
 
 router.use('/login', require('./login'));
-router.use('/callback', require('./callback'));
+router.use('/auth', require('./auth'));
 router.use('/main', require('./main'));
 router.use('/api', api);
 
