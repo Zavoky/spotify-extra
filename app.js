@@ -6,9 +6,6 @@ const path = require('path');
 const spotify = require('./routes/spotify/index')
 
 var app = express();
-app.engine('.html', require('ejs').__express);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'html')
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   resave: false,
