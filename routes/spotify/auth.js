@@ -1,15 +1,14 @@
 const router = require('express').Router();
 const request = require('request');
-const config = require('../../config');
 
-const client_id = config.CLIENT_ID;
-const client_secret = config.CLIENT_SECRET;
-const redirect_uri = config.REDIRECT_URI;
+const client_id = process.env.CLIENT_ID;
+const client_secret = process.env.CLIENT_SECRET;
+const redirect_uri = process.env.REDIRECT_URI;
 
 router.get('/', (req, res) => {
-  var code = req.query.code;
+  const code = req.query.code;
 
-  var authOptions = {
+  const authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     form: {
       code: code,

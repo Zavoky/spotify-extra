@@ -2,7 +2,7 @@ const router = require('express').Router();
 const request = require('request');
 
 router.get('/', (req, res) => {
-  var options = getOptions('/v1/me', req.session.access_token); 
+  const options = getOptions('/v1/me', req.session.access_token); 
   if (!req.session.userID) {
     request.get(options, (error, response, body) => {
       if (!error && response.statusCode == 200) { 
@@ -27,11 +27,11 @@ function getOptions(URL, token) {
 };
 
 function getCurrentlyPlaying(req, res, callback) {
-  var options = getOptions('/v1/me/player/currently-playing', req.session.access_token);
+  const options = getOptions('/v1/me/player/currently-playing', req.session.access_token);
   request.get(options, (error, response, body) => {
     if (!error && response.statusCode == 200) {
       if (body.context.type == 'playlist') {
-        var playlistURI = body.context.uri;
+        const playlistURI = body.context.uri;
         req.session.playlistID = playlistURI.substr(playlistURI.lastIndexOf(':') + 1);
         req.session.trackURI = body.item.uri;
         console.log('Playlist and Track URI recieved');
@@ -50,8 +50,8 @@ function getCurrentlyPlaying(req, res, callback) {
 };
 
 function deleteSong(req, res, callback) {
-  var options = getOptions('/v1/users/' + req.session.userID + '/playlists/' + req.session.playlistID + '/tracks', req.session.access_token); 
-  var delOptions = {
+  const options = getOptions('/v1/users/' + req.session.userID + '/playlists/' + req.session.playlistID + '/tracks', req.session.access_token); 
+  const delOptions = {
     'Content-Type': 'application/json',
     body: {
       tracks: [{ 'uri': req.session.trackURI }]
@@ -71,7 +71,7 @@ function deleteSong(req, res, callback) {
 };
 
 function skipSong(req, res) {
-  var options = getOptions('/v1/me/player/next', req.session.access_token);
+  const options = getOptions('/v1/me/player/next', req.session.access_token);
   request.post(options, (error, response, body) => {
     if (!error && response.statusCode === 204) {
       console.log('Song skipped');
@@ -83,4 +83,5 @@ function skipSong(req, res) {
     }
   });
 };
+
 module.exports = router;
