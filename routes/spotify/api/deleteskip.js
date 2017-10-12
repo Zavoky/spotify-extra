@@ -50,7 +50,7 @@ function getCurrentlyPlaying(req, res, callback) {
 };
 
 function deleteSong(req, res, callback) {
-  const options = getOptions('/v1/users/' + req.session.userID + '/playlists/' + req.session.playlistID + '/tracks', req.session.access_token); 
+  let options = getOptions('/v1/users/' + req.session.userID + '/playlists/' + req.session.playlistID + '/tracks', req.session.access_token); 
   const delOptions = {
     'Content-Type': 'application/json',
     body: {

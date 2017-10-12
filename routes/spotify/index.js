@@ -16,8 +16,8 @@ router.use('/api', isAuthenticated, api);
 function isAuthenticated(req, res, next) {
   if (req.session.access_token) {
     // Check if token is expired
-    const current_time = math.floor(date.now() / 1000);
-    const expired = (current_time - req.session.time) > expires_in;
+    const current_time = Math.floor(Date.now() / 1000);
+    const expired = (current_time - req.session.time) > req.session.expires_in;
     if (expired) { 
       const refreshOptions = {
         url: 'https://accounts.spotify.com/api/token',
