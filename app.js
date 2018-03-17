@@ -11,7 +11,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   secret: 'hehexd',
-  store: new RedisStore()
+  store: new RedisStore({ host: 'redis', port: 6379 })
 }));
 
 app.use('/spotify', spotify);
